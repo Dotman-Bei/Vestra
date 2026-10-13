@@ -2,9 +2,10 @@
 
 import { useId, useState, type FormEvent } from "react";
 import { isAddress } from "viem";
-import type { Asset } from "@/lib/types";
+import type { Address, Asset } from "@/lib/types";
 import { formatDateTime, truncateAddress } from "@/lib/format";
 import { acceptHandover, cancelHandover, proposeHandover } from "@/lib/data/actions";
+import { assetArgs, proposeHandoverArgs } from "@/lib/chain/args";
 import { buttonClass } from "@/components/ui/button";
 import { Field, describedBy, inputClass } from "@/components/ui/Field";
 import { Sheet } from "@/components/ui/Sheet";
@@ -53,10 +54,16 @@ export function ProposeHandoverDialog({
     if (!isAddress(value)) return setError("Enter a full wallet address starting with 0x.");
     if (value.toLowerCase() === address.toLowerCase()) return setError("That’s your own wallet. Enter the recipient’s.");
     setError(null);
-    run(() =>
-      proposeHandover({ assetId: asset.id, actor: address, to: value, days: Number(days), evidenceHash: files[0]?.hash }),
-      { label: "Handover proposed", assetId: asset.id },
-    );
+    run({
+      label: "Handover proposed",
+      assetId: asset.id,
+      demo: () =>
+        proposeHandover({ assetId: asset.id, actor: address, to: value, days: Number(days), evidenceHash: files[0]?.hash }),
+      chain: {
+        functionName: "proposeHandover",
+        args: proposeHandoverArgs(asset.id, value as Address, Number(days), files[0]?.hash),
+      },
+    });
   }
 
   const done = phase.kind === "confirmed";
@@ -215,9 +222,11 @@ export function ConfirmHandoverDialog({
               disabled={busy || !address}
               onClick={() =>
                 address &&
-                run(() => (accept ? acceptHandover : cancelHandover)({ assetId: asset.id, actor: address }), {
+                run({
                   label: accept ? "Handover accepted" : "Handover cancelled",
                   assetId: asset.id,
+                  demo: () => (accept ? acceptHandover : cancelHandover)({ assetId: asset.id, actor: address }),
+                  chain: { functionName: accept ? "acceptHandover" : "cancelHandover", args: assetArgs(asset.id) },
                 })
               }
               className={buttonClass("primary", "md")}

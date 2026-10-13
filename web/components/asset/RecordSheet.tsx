@@ -5,6 +5,7 @@ import type { Asset, AssetStatus, LifecycleRecord, RecordType } from "@/lib/type
 import { RECORD_LABEL, STATUS_LABEL } from "@/lib/format";
 import { correctableRecords, statusChangeTargets, SUMMARY_MAX } from "@/lib/rules";
 import { submitRecord } from "@/lib/data/actions";
+import { addRecordArgs } from "@/lib/chain/args";
 import { buttonClass } from "@/components/ui/button";
 import { Field, FieldError, describedBy, inputClass } from "@/components/ui/Field";
 import { Sheet } from "@/components/ui/Sheet";
@@ -88,20 +89,21 @@ export function RecordSheet({
   function onSubmit(e: FormEvent) {
     e.preventDefault();
     if (!address || !validate()) return;
-    run(() =>
-      submitRecord({
-        assetId: asset.id,
-        actor: address,
-        type: effectiveType,
-        summary,
-        evidenceHash: files[0]?.hash,
-        documentUri: documentUri || undefined,
-        providerId: providerId || undefined,
-        newStatus: effectiveType === "STATUS_CHANGE" ? (newStatus as AssetStatus) : undefined,
-        supersedes: effectiveType === "CORRECTION" ? Number(supersedes) : undefined,
-      }),
-      { label: `${RECORD_LABEL[effectiveType]} record`, assetId: asset.id },
-    );
+    const record = {
+      type: effectiveType,
+      summary,
+      evidenceHash: files[0]?.hash,
+      documentUri: documentUri || undefined,
+      providerId: providerId || undefined,
+      newStatus: effectiveType === "STATUS_CHANGE" ? (newStatus as AssetStatus) : undefined,
+      supersedes: effectiveType === "CORRECTION" ? Number(supersedes) : undefined,
+    };
+    run({
+      label: `${RECORD_LABEL[effectiveType]} record`,
+      assetId: asset.id,
+      demo: () => submitRecord({ assetId: asset.id, actor: address, ...record }),
+      chain: { functionName: "addRecord", args: addRecordArgs(asset.id, record) },
+    });
   }
 
   const done = phase.kind === "confirmed";

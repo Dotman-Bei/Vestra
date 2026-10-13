@@ -54,9 +54,9 @@ export function TxStatus({ phase, demo, className }: { phase: TxPhase; demo: boo
           );
         })}
       </ol>
-      {phase.kind === "confirmed" && (
+      {(phase.kind === "confirmed" || (phase.kind === "submitted" && phase.tx)) && (
         <p className="mt-3 flex flex-wrap items-center gap-x-2 border-t border-line pt-3 text-[13px] text-muted">
-          Transaction <TxLink hash={phase.tx} />
+          Transaction <TxLink hash={phase.tx!} />
         </p>
       )}
     </div>

@@ -14,6 +14,7 @@ import {
   type RegistrationInput,
 } from "@/lib/registration";
 import { registerAsset } from "@/lib/data/actions";
+import { registerArgs } from "@/lib/chain/args";
 import { useViewer } from "@/components/shell/Viewer";
 import { PassportPlate } from "@/components/asset/PassportPlate";
 import { PrintTag } from "@/components/asset/PrintTag";
@@ -126,7 +127,11 @@ export function RegisterForm() {
 
   function onRegister() {
     if (!viewer.address) return;
-    run(() => registerAsset({ ...input, actor: viewer.address! }), { label: `Registered ${input.name.trim()}` });
+    run({
+      label: `Registered ${input.name.trim()}`,
+      demo: () => registerAsset({ ...input, actor: viewer.address! }),
+      chain: { functionName: "registerAsset", args: registerArgs(input) },
+    });
   }
 
   function startOver() {
