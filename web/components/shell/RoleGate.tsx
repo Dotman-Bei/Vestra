@@ -59,11 +59,17 @@ export function RoleGate({
     return (
       <StateMessage
         icon={WalletIcon}
-        title="Connect a wallet to continue."
+        title="No wallet connected."
         action={
           <>
-            {asRegistrar ?? <WalletButton />}
-            {demoNote}
+            {asRegistrar ?? (demo ? null : <WalletButton />)}
+            {demo && !asRegistrar ? (
+              <p className="text-[14px] leading-5 text-muted">
+                Demo: choose an example wallet in &ldquo;Viewing as&rdquo; at the top of the page.
+              </p>
+            ) : (
+              demoNote
+            )}
           </>
         }
       >
