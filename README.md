@@ -4,7 +4,7 @@
 
 Vestra gives each piece of equipment a passport: who registered it, every inspection, repair and incident, and every change of the wallet responsible for it, in one append-only record anyone can check by scanning a QR tag.
 
-> **Status:** MVP. The contract is written and tested, and the app runs end to end against a local chain. It is **not yet deployed** to Bohr Testnet or BOT Mainnet, and it has **not been audited**. No pilot assets have been registered. The app's default mode shows clearly labeled example data.
+> **Status:** MVP. A development deployment is live and source-verified on Bohr Testnet ([details](docs/DEPLOYMENTS.md)); it will be replaced by a clean deployment with a multisig admin before the pilot. Not deployed to BOT Mainnet. **Not audited.** No pilot assets have been registered. The app's demo mode shows clearly labeled example data.
 
 ## The problem
 
@@ -180,7 +180,7 @@ If `ADMIN_ADDRESS` differs from the deployer, the script starts a two-step admin
 
 ## Known limitations
 
-- Not deployed to Bohr Testnet or BOT Mainnet yet; deployment needs a funded key held by the project team.
+- Only a development deployment exists, on Bohr Testnet; its admin key was exposed, so a clean redeploy is required before the pilot. Not on BOT Mainnet.
 - Not audited.
 - No real pilot assets or users yet. Example data is always labeled.
 - Registry and dashboard read every asset; an indexer is needed past pilot scale.
@@ -196,7 +196,7 @@ If `ADMIN_ADDRESS` differs from the deployer, the script starts a two-step admin
 | M2 Registry contract: registration, roles, unique IDs | Done (tested, local) |
 | M3 Records and handover: status machine, corrections, expiry | Done (tested, local) |
 | M4 Frontend MVP: six pages, wallet flows, QR | Done (demo and local chain) |
-| M5 Testnet pilot and hardening: deploy and verify on Bohr, e2e from separate devices, edge cases | Next: needs a funded deployer key |
+| M5 Testnet pilot and hardening: deploy and verify on Bohr, e2e from separate devices, edge cases | In progress: development deployment verified on Bohr; clean redeploy and device testing next |
 | M6 Mainnet and real usage: multisig admin, mainnet deploy, real pilot, demo video, build log | Planned |
 
 ## License
