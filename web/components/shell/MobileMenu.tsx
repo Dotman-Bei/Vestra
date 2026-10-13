@@ -12,8 +12,15 @@ import { NAV_LINKS } from "./nav";
 import { Wordmark } from "./Wordmark";
 
 export function MobileMenu() {
+  return <Menu pathname={usePathname()} />;
+}
+
+export function MobileMenuFallback() {
+  return <Menu pathname="" />;
+}
+
+function Menu({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
 
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>

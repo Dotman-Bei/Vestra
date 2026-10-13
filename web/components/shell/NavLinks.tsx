@@ -6,7 +6,15 @@ import { cn } from "@/lib/cn";
 import { NAV_LINKS } from "./nav";
 
 export function NavLinks() {
-  const pathname = usePathname();
+  return <NavList pathname={usePathname()} />;
+}
+
+/** Rendered while the path is unknown (prerendered shell of dynamic routes). */
+export function NavLinksFallback() {
+  return <NavList pathname="" />;
+}
+
+function NavList({ pathname }: { pathname: string }) {
   return (
     <ul className="flex items-center gap-1">
       {NAV_LINKS.map(({ href, label }) => {
