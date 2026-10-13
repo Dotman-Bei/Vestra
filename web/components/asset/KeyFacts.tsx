@@ -63,7 +63,7 @@ export function KeyFacts({ asset, metadata }: { asset: Asset; metadata: Metadata
             <span className="font-mono text-[14px]">{asset.publicSerial}</span>
           ) : (
             <span className="flex flex-col gap-0.5">
-              <span>Kept private</span>
+              <span>{asset.serialCommitment ? "Kept private" : "Not recorded"}</span>
               {asset.serialCommitment && (
                 <span className="flex items-center gap-1 text-[13px] text-muted">
                   Commitment <HashChip hash={asset.serialCommitment} />
@@ -91,7 +91,7 @@ export function KeyFacts({ asset, metadata }: { asset: Asset; metadata: Metadata
               {metadata === "available" ? (
                 <span className="flex items-center gap-1.5 text-[13px] text-muted">
                   <CheckCircleIcon size={15} aria-hidden style={{ color: "var(--st-active-fg)" }} />
-                  Available and matches the recorded hash
+                  {asset.metadataHash ? "Available and matches the recorded hash" : "Available"}
                 </span>
               ) : (
                 <span className="flex items-start gap-1.5 text-[13px] leading-[18px] text-ink">

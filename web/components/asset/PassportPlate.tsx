@@ -13,7 +13,7 @@ export function PassportPlate({ asset, className }: { asset: Asset; className?: 
     ["Category", asset.category],
     ["Manufacturer", asset.manufacturer],
     ["Model", asset.model],
-    ["Serial", asset.publicSerial ?? "Kept private"],
+    ["Serial", asset.publicSerial ?? (asset.serialCommitment ? "Kept private" : undefined)],
   ];
 
   return (
@@ -35,7 +35,11 @@ export function PassportPlate({ asset, className }: { asset: Asset; className?: 
         <h3 className="mt-3 text-[19px] leading-7 font-semibold tracking-[-0.01em] text-balance text-ink">
           {asset.name}
         </h3>
-        <p className="mt-0.5 font-mono text-[20px] leading-7 font-medium text-ink">{asset.id}</p>
+        {asset.id ? (
+          <p className="mt-0.5 font-mono text-[20px] leading-7 font-medium text-ink">{asset.id}</p>
+        ) : (
+          <p className="mt-0.5 text-[15px] leading-7 text-muted">ID assigned on registration</p>
+        )}
       </header>
 
       <dl className="grid grid-cols-2 gap-x-6 gap-y-4 border-t border-line px-5 py-5 sm:px-6">
@@ -69,6 +73,7 @@ export function PassportPlate({ asset, className }: { asset: Asset; className?: 
             {truncateAddress(asset.registrar)}
           </dd>
         </div>
+        {asset.registeredBlock > 0 && (
         <div className="col-span-2">
           <dt className="text-[13px] leading-[18px] font-medium text-muted">Registered</dt>
           <dd className="mt-1 text-[15px] leading-6 text-ink">
@@ -77,6 +82,7 @@ export function PassportPlate({ asset, className }: { asset: Asset; className?: 
             <span className="font-mono text-[14px]">{formatNumber(asset.registeredBlock)}</span>
           </dd>
         </div>
+        )}
       </dl>
 
       {asset.lastRecord && (
