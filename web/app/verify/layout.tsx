@@ -1,5 +1,4 @@
 import { Wordmark } from "@/components/shell/Wordmark";
-import { ThemeToggle } from "@/components/shell/ThemeToggle";
 
 /** Minimal chrome for QR scans: no nav, nothing between the scan and the answer. */
 export default function VerifyLayout({ children }: { children: React.ReactNode }) {
@@ -19,9 +18,6 @@ export default function VerifyLayout({ children }: { children: React.ReactNode }
             Vestra is a lifecycle record for real-world equipment on BOT Chain. A record shows what authorized wallets
             submitted and when. It is not proof of legal ownership, physical condition, location or value.
           </p>
-          <div className="self-start">
-            <ThemeToggle />
-          </div>
         </div>
       </footer>
     </>

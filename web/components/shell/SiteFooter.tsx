@@ -2,7 +2,6 @@ import Link from "next/link";
 import { explorerAddress, registryAddress, repoUrl } from "@/lib/config";
 import { truncateAddress } from "@/lib/format";
 import { Wordmark } from "./Wordmark";
-import { ThemeToggle } from "./ThemeToggle";
 import { NAV_LINKS } from "./nav";
 
 const linkClass = "text-muted hover:text-ink underline-offset-4 hover:underline";
@@ -56,9 +55,6 @@ export function SiteFooter() {
             </li>
             <li className="text-muted">MIT License</li>
           </ul>
-          <div className="mt-6">
-            <ThemeToggle />
-          </div>
         </div>
       </div>
     </footer>

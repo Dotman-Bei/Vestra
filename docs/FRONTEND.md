@@ -48,7 +48,7 @@ No official design system fits (this is not Fluent/Carbon/Material territory and
 
 ### 2.2 Palette (one accent, cool neutrals, locked)
 
-Tokens live as CSS variables on `:root` and are swapped under `@media (prefers-color-scheme: dark)` and `[data-theme="dark"]`. Theme follows the system by default; a manual toggle sits in the footer. One theme per page, no section inverts.
+Tokens live as CSS variables on `:root`. **The app is light-only** (product decision, 2026-10-13): there is no dark theme and no theme switch, and `color-scheme: light` is set so browsers in dark mode still render it light. The dark values below are kept only as a reference in case dark mode is reintroduced.
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
@@ -168,7 +168,6 @@ Record type labels: Inspection, Maintenance, Warranty update, Installation, Inci
 - Line 1: "Vestra is a lifecycle record for real-world equipment on BOT Chain."
 - Limitations (always visible, 14px muted): "A Vestra record shows what authorized wallets submitted and when. It is not proof of legal ownership, physical condition, location or value."
 - Links: Registry · Register · Dashboard · Source code · Contract on explorer (renders "Contract not yet deployed" text when env is empty)
-- Theme toggle (System / Light / Dark)
 - "MIT License"
 
 ---
@@ -276,7 +275,7 @@ Main action: read the history; if the wallet is permitted, add a record. Layout:
 
 ### 3.3 Public Verification `/verify/[assetId]`
 
-Main action: confirm the record exists and see status. Mobile-first, narrow column, no nav clutter (its own layout: wordmark-only header, no nav, and a footer with the limitations sentence and theme toggle; "Open full passport" sits in the content).
+Main action: confirm the record exists and see status. Mobile-first, narrow column, no nav clutter (its own layout: wordmark-only header, no nav, and a footer with the limitations sentence; "Open full passport" sits in the content).
 
 **1. Result block**
 - Found: `SealCheck` icon, H1 **Record found on BOT Chain**, line "Read from block #4,812,033 just now" (mono, explorer link).
@@ -399,7 +398,6 @@ Mobile: single column, tabs become a segmented control, transactions at the bott
 | `EmptyState` / `ErrorState` | Icon, one heading, one sentence, one action | Left-aligned in content column | Same |
 | `Skeleton` | Shape-matched blocks in `--surface-sunk`, subtle opacity pulse (disabled under reduced motion) | Same | Same |
 | `Toast` | Only for transient confirmations ("Copied", "Link copied") | Bottom-right | Bottom-center |
-| `ThemeToggle` | System / Light / Dark, stored in localStorage (try/catch) | Footer | Footer |
 
 Buttons: Primary (`--accent` bg, `--accent-ink` text), Secondary (`--surface` bg, `--border-strong` border, `--text`), Ghost/text link (`--accent`). Heights 40px (44px on touch). Labels max 3 words, never wrap. Focus ring: 2px `--accent` with 2px offset on every interactive element.
 

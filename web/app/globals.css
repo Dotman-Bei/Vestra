@@ -1,16 +1,6 @@
 @import "tailwindcss";
 
-/* Theme follows the system unless <html data-theme="light|dark"> is set by the theme toggle. */
-@custom-variant dark {
-  @media (prefers-color-scheme: dark) {
-    &:where(:root:not([data-theme="light"]) *) {
-      @slot;
-    }
-  }
-  &:where([data-theme="dark"] *) {
-    @slot;
-  }
-}
+/* The app is light-only by design. */
 
 :root {
   color-scheme: light;
@@ -37,62 +27,6 @@
   --st-danger-bg: #fbe1de;
 
   --shadow-float: 0 12px 32px rgb(20 23 28 / 0.12);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-
-    --bg: #0e1013;
-    --surface: #15181d;
-    --surface-sunk: #1c2027;
-    --line: #2a2f37;
-    --line-strong: #3d434d;
-    --ink: #eceef1;
-    --ink-muted: #9ca3ae;
-    --accent: #8197ff;
-    --accent-hover: #9aabff;
-    --accent-ink: #0e1013;
-    --accent-wash: #1b2244;
-
-    --st-registered-fg: #c3c8d0;
-    --st-registered-bg: #252a31;
-    --st-active-fg: #6fd39e;
-    --st-active-bg: #12291e;
-    --st-maint-fg: #f2c064;
-    --st-maint-bg: #2d2312;
-    --st-danger-fg: #ff8f86;
-    --st-danger-bg: #341614;
-
-    --shadow-float: 0 12px 32px rgb(0 0 0 / 0.45);
-  }
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-
-  --bg: #0e1013;
-  --surface: #15181d;
-  --surface-sunk: #1c2027;
-  --line: #2a2f37;
-  --line-strong: #3d434d;
-  --ink: #eceef1;
-  --ink-muted: #9ca3ae;
-  --accent: #8197ff;
-  --accent-hover: #9aabff;
-  --accent-ink: #0e1013;
-  --accent-wash: #1b2244;
-
-  --st-registered-fg: #c3c8d0;
-  --st-registered-bg: #252a31;
-  --st-active-fg: #6fd39e;
-  --st-active-bg: #12291e;
-  --st-maint-fg: #f2c064;
-  --st-maint-bg: #2d2312;
-  --st-danger-fg: #ff8f86;
-  --st-danger-bg: #341614;
-
-  --shadow-float: 0 12px 32px rgb(0 0 0 / 0.45);
 }
 
 @theme inline {
