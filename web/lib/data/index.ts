@@ -2,6 +2,7 @@ import { connection } from "next/server";
 import type { Asset, LifecycleRecord } from "../types";
 import { dataSource } from "../config";
 import { nextBlock, store } from "./fixtures";
+import { DEMO_REGISTRARS, DEMO_SERVICE_PROVIDERS } from "./personas";
 
 /**
  * Read layer. Pages only talk to these functions, so swapping the fixture
@@ -54,4 +55,47 @@ export async function listAssets(): Promise<Asset[]> {
 export async function getChainHead(): Promise<{ block: number; timestamp: number }> {
   await guard();
   return nextBlock();
+}
+
+export interface DashboardRecord extends LifecycleRecord {
+  assetName: string;
+}
+
+export interface DashboardData {
+  address: string;
+  roles: { registrar: boolean; serviceProvider: boolean };
+  /** Assets this wallet is the registered steward of. */
+  stewarded: Asset[];
+  /** Assets this wallet registered. */
+  registered: Asset[];
+  /** Handovers proposed to this wallet that haven't been accepted or cancelled. */
+  incoming: Asset[];
+  /** Records this wallet submitted, newest first, at most 10. */
+  records: DashboardRecord[];
+  /** Assets a service provider can add records to: everything not retired. */
+  serviceable: Array<Pick<Asset, "id" | "name" | "status">>;
+}
+
+/** Everything the dashboard needs for one wallet. A chain deployment serves this from the indexer. */
+export async function getDashboard(address: string): Promise<DashboardData> {
+  await guard();
+  const a = address.toLowerCase();
+  const assets = [...store.assets.values()];
+  const same = (x?: string) => x?.toLowerCase() === a;
+  const records: DashboardRecord[] = [];
+  for (const [id, list] of store.records) {
+    for (const r of list) if (same(r.submitter)) records.push({ ...r, assetName: store.assets.get(id)?.name ?? id });
+  }
+  records.sort((x, y) => y.timestamp - x.timestamp);
+  const activity = (x: Asset) => x.lastRecord?.at ?? x.registeredAt;
+  const byActivity = (list: Asset[]) => list.sort((x, y) => activity(y) - activity(x));
+  return structuredClone({
+    address,
+    roles: { registrar: DEMO_REGISTRARS.has(a), serviceProvider: DEMO_SERVICE_PROVIDERS.has(a) },
+    stewarded: byActivity(assets.filter((x) => same(x.steward))),
+    registered: byActivity(assets.filter((x) => same(x.registrar))),
+    incoming: assets.filter((x) => same(x.pendingHandover?.to)),
+    records: records.slice(0, 10),
+    serviceable: assets.filter((x) => x.status !== "RETIRED").map(({ id, name, status }) => ({ id, name, status })),
+  });
 }
