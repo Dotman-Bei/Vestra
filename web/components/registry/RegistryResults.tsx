@@ -56,7 +56,7 @@ export function RegistryResults({
           </Link>
         }
       >
-        {query.q ? "Try the full ID, for example VST-0007, or fewer filters." : "Try removing a status or category."}
+        {query.q ? "Check the spelling, try the full asset ID, or remove a filter." : "Try removing a status or category."}
       </StateMessage>
     );
   }

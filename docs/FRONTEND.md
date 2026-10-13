@@ -318,7 +318,7 @@ Main action: open a passport.
 - Pagination: "Load 25 more".
 - Count line: "Showing 25 of 61 assets".
 
-**States:** skeleton rows (6); empty registry ("No assets are registered yet. Registrars can add the first one." + **Register an asset**); no results ("Nothing matches 'VST-02'. Try the full ID, e.g. VST-0207." + "Clear filters"); error with Retry.
+**States:** skeleton rows (6); empty registry ("No assets are registered yet. Registrars can add the first one." + **Register an asset**); no results ("Nothing matches “VST-02”." + "Check the spelling, try the full asset ID, or remove a filter." + "Clear filters"); error with Retry.
 
 ---
 
