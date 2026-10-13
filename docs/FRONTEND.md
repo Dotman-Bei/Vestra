@@ -158,7 +158,7 @@ Record type labels: Inspection, Maintenance, Warranty update, Installation, Inci
 **Header** (64px, sticky, `--bg` with bottom hairline once scrolled)
 - Left: Vestra wordmark (Geist 600, 18px) with a simple square mark: a 2px-rimmed rounded square containing a single mono "V". This is the only hand-made graphic.
 - Center-left nav: `Registry` · `Register` · `Dashboard`
-- Right: `Connect wallet` button (secondary style). Connected state: network name + truncated address `0x4f2a…91c3`, opens a menu with "Copy address", "View on explorer", "Disconnect".
+- Right: `Connect wallet` button (secondary style). Hidden while the fixture adapter is active, because the "Viewing as" select is then the acting wallet. Connected state: network name + truncated address `0x4f2a…91c3`, opens a menu with "Copy address", "View on explorer", "Disconnect".
 - Wrong network: button turns to "Switch network" (accent). The network name stays out of the label so it never wraps.
 - Mobile (<768px): wordmark + wallet icon button + menu button; menu opens a full-height sheet with the three links and the wallet controls.
 
@@ -338,6 +338,8 @@ Main action: submit a new asset registration. Layout: form 7 cols, live preview 
 3. **Steward**: Initial steward wallet (default: connected wallet, with "Use my wallet" link), validated as an address.
 4. **Records and evidence**: Metadata URI (optional, https or ipfs), Evidence files (`FileHashInput`: files are hashed in the browser and never uploaded; shows filename + SHA-256 chip per file).
 5. **Starting status**: radio Registered / Active, helper "Use Active if the equipment is already installed and running."
+
+**What goes on-chain**: name, category, type, manufacturer, model, serial or serial hash, steward, status, metadata link and evidence hashes are stored on-chain as short public strings, so the verify page can always show what the asset is even if off-chain metadata is down. Longer documents stay behind the metadata link. The page says up front that everything entered is public and permanent. A private serial never leaves the browser: only keccak256(salt, serial) is sent, and the registrar must confirm they saved the salt.
 
 **Preview column**: "What will be public" (plate preview updates live) and "Written to BOT Chain" (list of fields that go on-chain: asset ID, registrar, steward, status, metadata URI, evidence hashes, serial or serial hash).
 
