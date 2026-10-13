@@ -5,13 +5,16 @@ import { WagmiProvider } from "wagmi";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { MotionConfig } from "motion/react";
 import { wagmiConfig } from "@/lib/wagmi";
+import { ViewerProvider } from "./Viewer";
 
 export function Providers({ children }: { children: ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
   return (
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
-        <MotionConfig reducedMotion="user">{children}</MotionConfig>
+        <ViewerProvider>
+          <MotionConfig reducedMotion="user">{children}</MotionConfig>
+        </ViewerProvider>
       </QueryClientProvider>
     </WagmiProvider>
   );
