@@ -14,6 +14,8 @@ export interface Viewer {
   /** "demo" while the fixture adapter is active; actions then use example wallets. */
   mode: "demo" | "wallet";
   personaId: PersonaId;
+  /** False until the saved persona or wallet connection has been restored. */
+  ready: boolean;
   setPersona: (id: PersonaId) => void;
 }
 
@@ -21,8 +23,9 @@ const ViewerContext = createContext<Viewer | null>(null);
 const STORAGE_KEY = "vestra-demo-persona";
 
 export function ViewerProvider({ children }: { children: ReactNode }) {
-  const { address } = useConnection();
+  const { address, status } = useConnection();
   const [personaId, setPersonaId] = useState<PersonaId>("visitor");
+  const [restored, setRestored] = useState(false);
 
   useEffect(() => {
     try {
@@ -32,6 +35,7 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
     } catch {
       // Storage unavailable: start as a visitor.
     }
+    setRestored(true);
   }, []);
 
   const setPersona = useCallback((id: PersonaId) => {
@@ -52,12 +56,20 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
         roles: { registrar: DEMO_REGISTRARS.has(a), serviceProvider: DEMO_SERVICE_PROVIDERS.has(a) },
         mode: "demo",
         personaId,
+        ready: restored,
         setPersona,
       };
     }
     // Role reads from the registry contract land with the chain adapter.
-    return { address: address ?? null, roles: NO_ROLES, mode: "wallet", personaId: "visitor", setPersona };
-  }, [personaId, setPersona, address]);
+    return {
+      address: address ?? null,
+      roles: NO_ROLES,
+      mode: "wallet",
+      personaId: "visitor",
+      ready: status !== "connecting" && status !== "reconnecting",
+      setPersona,
+    };
+  }, [personaId, setPersona, address, status, restored]);
 
   return <ViewerContext.Provider value={value}>{children}</ViewerContext.Provider>;
 }

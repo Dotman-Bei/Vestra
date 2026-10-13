@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { Z } from "@/lib/z";
+import { dataSource } from "@/lib/config";
 import { Wordmark } from "./Wordmark";
 import { NavLinks, NavLinksFallback } from "./NavLinks";
 import { WalletButton } from "./WalletButton";
@@ -17,12 +18,17 @@ export function SiteHeader() {
           </Suspense>
         </nav>
         <div className="ml-auto flex items-center gap-1">
-          <div className="hidden md:block">
-            <WalletButton />
-          </div>
-          <div className="md:hidden">
-            <WalletButton compact />
-          </div>
+          {/* In demo mode the "Viewing as" select is the acting wallet, so a real wallet button would do nothing. */}
+          {dataSource !== "fixtures" && (
+            <>
+              <div className="hidden md:block">
+                <WalletButton />
+              </div>
+              <div className="md:hidden">
+                <WalletButton compact />
+              </div>
+            </>
+          )}
           <div className="md:hidden">
             <Suspense fallback={<MobileMenuFallback />}>
               <MobileMenu />
