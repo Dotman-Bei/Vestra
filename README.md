@@ -84,7 +84,7 @@ Revoking a role stops future actions immediately and never alters records alread
 Requirements: Node 22+, [Foundry](https://book.getfoundry.sh/getting-started/installation), Git.
 
 ```bash
-git clone --recurse-submodules <repo-url> && cd vestra
+git clone --recurse-submodules https://github.com/Dotman-Bei/Vestra.git && cd Vestra
 ```
 
 ### Demo mode (no chain needed)
