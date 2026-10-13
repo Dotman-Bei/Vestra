@@ -306,9 +306,11 @@ Main action: open a passport.
 **1. Header**: H1 **Registry**. Body: "Every asset registered on Vestra. Open one to see its full history."
 
 **2. Search + filters**
-- Search input, label "Search by asset ID or public serial". Exact ID match jumps straight to the passport.
+- Search input, label "Search by name, asset ID or serial". Typing filters live (debounced); pressing Enter on a complete ID (e.g. VST-0003) jumps straight to the passport.
 - Filters: Status (multi-select chips), Category (select).
-- Desktop: one row. Mobile: search full width, filters in a horizontal scroll row.
+- All filter state lives in the URL (`?q=&status=&category=`), so a filtered view can be shared. Results dim while new ones load.
+- Desktop: search and category on one row, status toggles on the row below (six statuses don't fit beside a usable search box). Mobile: search and category stacked full width, status toggles in a horizontal scroll row.
+- "Clear filters" sits on the results count line so it works at every width.
 
 **3. Results**
 - Desktop: `RegistryTable` columns: Asset (name + mono ID), Status, Category, Last record (type + relative date), Steward (truncated). Whole row is the link. Zebra off; hairline under header only; row hover `--surface`.
