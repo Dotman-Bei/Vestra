@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import * as Menu from "@radix-ui/react-dropdown-menu";
 import { useConnect, useConnection, useConnectors, useDisconnect, useSwitchChain } from "wagmi";
 import {
@@ -24,6 +24,8 @@ const itemClass =
   "flex h-10 cursor-default items-center gap-2.5 rounded-[6px] px-3 text-[15px] text-ink outline-none " +
   "data-[highlighted]:bg-sunk";
 
+const noopSubscribe = () => () => {};
+
 export function WalletButton({ compact = false }: { compact?: boolean }) {
   const { address, status, chainId } = useConnection();
   const connectors = useConnectors();
@@ -31,12 +33,14 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
   const disconnect = useDisconnect();
   const switchChain = useSwitchChain();
   const [copied, setCopied] = useState(false);
+  // wagmi restores the connection on the client only; render the server's disconnected state until mounted.
+  const mounted = useSyncExternalStore(noopSubscribe, () => true, () => false);
 
   // Prefer wallets announced through EIP-6963; fall back to the generic injected connector.
   const announced = connectors.filter((c) => c.id !== "injected");
   const options = announced.length ? announced : connectors;
 
-  if (status === "connecting" || status === "reconnecting") {
+  if (mounted && (status === "connecting" || status === "reconnecting")) {
     return (
       <button disabled className={buttonClass("secondary", compact ? "icon" : "md", compact ? undefined : "min-w-[148px]")}>
         <WalletIcon size={18} aria-hidden />
@@ -45,7 +49,7 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
     );
   }
 
-  if (status === "connected" && address) {
+  if (mounted && status === "connected" && address) {
     if (chainId !== appChain.id) {
       return (
         <button
