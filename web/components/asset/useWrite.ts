@@ -9,7 +9,7 @@ export type TxPhase =
   | { kind: "idle" }
   | { kind: "wallet" }
   | { kind: "submitted" }
-  | { kind: "confirmed"; tx: Hex; index?: number }
+  | { kind: "confirmed"; tx: Hex; index?: number; assetId?: string }
   | { kind: "failed"; error: string };
 
 /**
@@ -30,7 +30,7 @@ export function useWrite() {
       setPhase({ kind: "submitted" });
       try {
         const res = await write();
-        setPhase(res.ok ? { kind: "confirmed", tx: res.tx, index: res.index } : { kind: "failed", error: res.error });
+        setPhase(res.ok ? { kind: "confirmed", tx: res.tx, index: res.index, assetId: res.assetId } : { kind: "failed", error: res.error });
       } catch {
         setPhase({ kind: "failed", error: "Couldn’t reach BOT Chain. Nothing was written; try again." });
       }

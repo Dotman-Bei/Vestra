@@ -16,6 +16,7 @@ import {
 } from "../rules";
 import { fakeHex, nextBlock, store } from "./fixtures";
 import { DEMO_REGISTRARS, DEMO_SERVICE_PROVIDERS } from "./personas";
+import { validateRegistration, type RegistrationInput } from "../registration";
 
 /**
  * Demo writes for the fixture adapter. They apply the same rules the registry
@@ -23,7 +24,7 @@ import { DEMO_REGISTRARS, DEMO_SERVICE_PROVIDERS } from "./personas";
  * map to. In chain mode the UI sends real transactions instead.
  */
 
-export type WriteResult = { ok: true; tx: Hex; index?: number } | { ok: false; error: string };
+export type WriteResult = { ok: true; tx: Hex; index?: number; assetId?: string } | { ok: false; error: string };
 
 const DAY = 86_400;
 const latency = () => new Promise((r) => setTimeout(r, 900));
@@ -177,4 +178,48 @@ export async function cancelHandover(input: { assetId: string; actor: Address })
   asset.pendingHandover = undefined;
   refresh();
   return { ok: true, tx: fakeHex(`${input.assetId}-cancel-${Date.now()}`) };
+}
+
+export async function registerAsset(input: RegistrationInput & { actor: Address }): Promise<WriteResult> {
+  if (dataSource !== "fixtures") return fail("Demo writes are disabled.");
+  await latency();
+
+  if (!rolesOf(input.actor).registrar) return fail("Only approved registrar wallets can register assets.");
+  const errors = validateRegistration(input);
+  const firstError = Object.values(errors)[0];
+  if (firstError) return fail(firstError);
+
+  // Sequential IDs, as the contract assigns them. VST-0007 is reserved for the Home page example.
+  const used = new Set([...store.assets.keys(), "VST-0007"]);
+  const idFor = (n: number) => `VST-${String(n).padStart(4, "0")}`;
+  let n = Math.max(...[...used].map((id) => Number(id.slice(4)))) + 1;
+  while (used.has(idFor(n))) n++;
+  const id = idFor(n);
+
+  const { timestamp, block } = nextBlock();
+  const tx = fakeHex(`${id}-reg-${timestamp}`);
+  const uri = input.metadataUri?.trim() || undefined;
+  store.assets.set(id, {
+    id,
+    name: input.name.trim(),
+    category: input.category,
+    type: input.type.trim(),
+    manufacturer: input.manufacturer?.trim() || undefined,
+    model: input.model?.trim() || undefined,
+    publicSerial: input.publicSerial?.trim() || null,
+    serialCommitment: input.serialCommitment,
+    steward: input.steward.trim() as Address,
+    registrar: input.actor,
+    status: input.status,
+    registeredAt: timestamp,
+    registeredBlock: block,
+    registeredTx: tx,
+    metadataUri: uri,
+    evidenceHashes: input.evidenceHashes,
+    recordCount: 0,
+  });
+  store.records.set(id, []);
+  store.metadata.set(id, uri ? "available" : "none");
+  refresh();
+  return { ok: true, tx, assetId: id };
 }
