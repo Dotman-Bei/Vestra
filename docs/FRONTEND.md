@@ -363,7 +363,9 @@ Main action: clear pending handovers and actions. Roles detected on-chain and sh
 4. **Your records** (service provider): last 10 submitted records with asset name, type, date, tx link; button **Add record** opens asset picker then `RecordSheet`.
 5. **Recent transactions**: this session's transactions with `TxStatus` (pending / confirmed / failed), tx links.
 
-Desktop: "Needs your action" spans full width; sections 2-4 as tabs when the wallet has 2+ roles, plain stacked otherwise; Recent transactions in a right rail (4 cols).
+Desktop: "Needs your action" first; sections 2-4 as tabs when the wallet has 2+ roles, a single titled section otherwise; Recent transactions in a sticky right rail (4 cols).
+
+Row actions ("Add record", "Propose handover") are light accent text links, not bordered buttons, so long lists stay calm. They open the passport with the matching sheet already open (`/assets/VST-0001?do=record`), reusing the passport's tested flows. Accept and cancel happen inline. Dashboard data comes from a wallet-scoped read endpoint (`/api/dashboard?address=`), which an indexer serves in chain mode. Recent transactions are this browser session's writes, kept in sessionStorage.
 Mobile: single column, tabs become a segmented control, transactions at the bottom.
 
 **Empty (no roles, no assets)**: "**Nothing here for this wallet yet.** It isn't a registrar or service provider and isn't the steward of any asset. If someone proposes a handover to 0x4f2a…91c3, it will appear here."
