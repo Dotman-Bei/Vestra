@@ -1,9 +1,12 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { useConnection } from "wagmi";
+import { useConnection, useReadContracts } from "wagmi";
+import { keccak256, toBytes } from "viem";
+import { registryAbi } from "@/lib/chain/abi";
+import { appChain } from "@/lib/chain/definition";
 import type { Address } from "@/lib/types";
-import { dataSource } from "@/lib/config";
+import { dataSource, registryAddress } from "@/lib/config";
 import { NO_ROLES, type ViewerRoles } from "@/lib/rules";
 import { DEMO_REGISTRARS, DEMO_SERVICE_PROVIDERS, PERSONAS, type PersonaId } from "@/lib/data/personas";
 
@@ -20,12 +23,26 @@ export interface Viewer {
 }
 
 const ViewerContext = createContext<Viewer | null>(null);
+const REGISTRAR_ROLE = keccak256(toBytes("REGISTRAR_ROLE"));
+const SERVICE_PROVIDER_ROLE = keccak256(toBytes("SERVICE_PROVIDER_ROLE"));
 const STORAGE_KEY = "vestra-demo-persona";
 
 export function ViewerProvider({ children }: { children: ReactNode }) {
   const { address, status } = useConnection();
   const [personaId, setPersonaId] = useState<PersonaId>("visitor");
   const [restored, setRestored] = useState(false);
+
+  // Chain mode: roles come from the registry contract.
+  const roleReads = useReadContracts({
+    contracts: [REGISTRAR_ROLE, SERVICE_PROVIDER_ROLE].map((role) => ({
+      address: registryAddress!,
+      abi: registryAbi,
+      functionName: "hasRole" as const,
+      args: [role, address!] as const,
+      chainId: appChain.id,
+    })),
+    query: { enabled: dataSource === "chain" && !!registryAddress && !!address },
+  });
 
   useEffect(() => {
     try {
@@ -60,16 +77,18 @@ export function ViewerProvider({ children }: { children: ReactNode }) {
         setPersona,
       };
     }
-    // Role reads from the registry contract land with the chain adapter.
+    const [registrar, service] = roleReads.data ?? [];
     return {
       address: address ?? null,
-      roles: NO_ROLES,
+      roles: address
+        ? { registrar: registrar?.result === true, serviceProvider: service?.result === true }
+        : NO_ROLES,
       mode: "wallet",
       personaId: "visitor",
-      ready: status !== "connecting" && status !== "reconnecting",
+      ready: status !== "connecting" && status !== "reconnecting" && (!address || !roleReads.isPending),
       setPersona,
     };
-  }, [personaId, setPersona, address, status, restored]);
+  }, [personaId, setPersona, address, status, restored, roleReads.data, roleReads.isPending]);
 
   return <ViewerContext.Provider value={value}>{children}</ViewerContext.Provider>;
 }
