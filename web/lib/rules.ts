@@ -61,8 +61,10 @@ export function allowedRecordTypes(
     types.add("INSTALLATION");
     if (statusChangeTargets(asset.status).length) types.add("STATUS_CHANGE");
   }
-  // Anyone may correct a record they submitted themselves, even after retirement.
-  if (correctableRecords(records, who).length) types.add("CORRECTION");
+  // A wallet may correct its own records, even after retirement, while it still holds a role that lets it
+  // write to this asset. Revoked wallets can't (mirrors VestraRegistry.canSubmit).
+  const canStillWrite = roles.serviceProvider || isSteward(asset, who) || isAssetRegistrar(asset, who, roles);
+  if (canStillWrite && correctableRecords(records, who).length) types.add("CORRECTION");
 
   const order: RecordType[] = [
     "INSPECTION",
