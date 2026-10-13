@@ -3,9 +3,10 @@ import type { Asset, LifecycleRecord } from "../types";
 /**
  * The example passport shown on the Home page. It is always captioned
  * "Example record. Not a registered asset." and never appears in the registry.
+ * The contract never assigns ID 0, so VST-0000 can't collide with a real asset.
  */
 export const EXAMPLE_ASSET: Asset = {
-  id: "VST-0007",
+  id: "VST-0000",
   name: "Rooftop inverter, Block C",
   category: "Solar inverter",
   type: "String inverter, 3-phase",
@@ -27,7 +28,7 @@ export const EXAMPLE_ASSET: Asset = {
 
 export const EXAMPLE_CLAIM: LifecycleRecord = {
   index: 6,
-  assetId: "VST-0007",
+  assetId: "VST-0000",
   type: "INSPECTION",
   submitter: "0xc71e09b4d2a85f3e6b1c7d9a0e4f2b8c5d3a6e1f",
   timestamp: 1788393600,

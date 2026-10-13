@@ -141,12 +141,13 @@ async function Verification({ params }: { params: PageProps<"/verify/[assetId]">
           </p>
         )}
 
-        {metadata === "unavailable" && (
+        {(metadata === "unavailable" || metadata === "mismatch") && (
           <p className="flex items-start gap-2 rounded-b-[10px] border-t border-line bg-sunk/60 px-5 py-3.5 text-[14px] leading-5 text-ink">
             <WarningIcon size={17} aria-hidden className="mt-px shrink-0" style={{ color: "var(--st-maint-fg)" }} />
             <span>
-              Some details are unavailable because the linked metadata couldn&rsquo;t be loaded. The on-chain record is
-              intact.
+              {metadata === "mismatch"
+                ? "The linked metadata doesn’t match the hash recorded at registration. The on-chain record is intact."
+                : "Some details are unavailable because the linked metadata couldn’t be loaded. The on-chain record is intact."}
             </span>
           </p>
         )}
