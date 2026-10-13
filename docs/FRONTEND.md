@@ -131,6 +131,7 @@ Banned: marquees, parallax, scroll-jacking, infinite loops, magnetic buttons, ho
 ### 2.7 Data honesty in the UI
 
 - All chain reads go through one data adapter (`lib/data`). Until contracts are deployed, a **fixture adapter** serves example data and a persistent banner appears at the top of every page: "Demo data. These records are examples and are not on BOT Chain." The banner disappears automatically when the chain adapter is configured.
+- While the fixture adapter is active, the banner also carries a **"Viewing as"** select (Visitor, Registrar, two Stewards, Service provider). It picks which example wallet the app acts as, so every role's view and every write flow can be exercised. Demo writes go through server actions that apply the same rules the contract will enforce (`lib/rules.ts`). In chain mode the select disappears and the connected wallet's on-chain roles decide.
 - Home shows usage metrics **only** when the chain adapter is live and counts are > 0. Otherwise the section does not render.
 - Every chain-sourced value links to the explorer (tx, block, address). Explorer base URL and chain ID come from env config, never hardcoded.
 
@@ -325,7 +326,7 @@ Main action: submit a new asset registration. Layout: form 7 cols, live preview 
 **Gate states (`RoleGate`)**
 - Not connected: H1 **Register an asset**. "Registration is limited to approved registrar wallets. Connect yours to continue." **Connect wallet**.
 - Connected, not a registrar: "**This wallet isn't an approved registrar.** 0x4f2a…91c3 doesn't have the registrar role on Vestra. Registrar access is granted by the Vestra administrator." Link to Registry.
-- Wrong network: "**Switch to BOT Chain** to register assets." button.
+- Wrong network: "**Switch network** to register assets." button.
 
 **Form (registrar)**, grouped with H3 headings and one hairline between groups:
 
