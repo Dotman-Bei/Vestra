@@ -126,7 +126,7 @@ export function RegisterForm() {
 
   function onRegister() {
     if (!viewer.address) return;
-    run(() => registerAsset({ ...input, actor: viewer.address! }));
+    run(() => registerAsset({ ...input, actor: viewer.address! }), { label: `Registered ${input.name.trim()}` });
   }
 
   function startOver() {

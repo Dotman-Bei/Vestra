@@ -55,6 +55,7 @@ export function ProposeHandoverDialog({
     setError(null);
     run(() =>
       proposeHandover({ assetId: asset.id, actor: address, to: value, days: Number(days), evidenceHash: files[0]?.hash }),
+      { label: "Handover proposed", assetId: asset.id },
     );
   }
 
@@ -214,7 +215,10 @@ export function ConfirmHandoverDialog({
               disabled={busy || !address}
               onClick={() =>
                 address &&
-                run(() => (accept ? acceptHandover : cancelHandover)({ assetId: asset.id, actor: address }))
+                run(() => (accept ? acceptHandover : cancelHandover)({ assetId: asset.id, actor: address }), {
+                  label: accept ? "Handover accepted" : "Handover cancelled",
+                  assetId: asset.id,
+                })
               }
               className={buttonClass("primary", "md")}
             >

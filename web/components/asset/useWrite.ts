@@ -4,6 +4,7 @@ import { useCallback, useState } from "react";
 import type { Hex } from "@/lib/types";
 import type { WriteResult } from "@/lib/data/actions";
 import { useViewer } from "@/components/shell/Viewer";
+import { logTx, settleTx } from "@/components/shell/txLog";
 
 export type TxPhase =
   | { kind: "idle" }
@@ -22,17 +23,26 @@ export function useWrite() {
   const [phase, setPhase] = useState<TxPhase>({ kind: "idle" });
 
   const run = useCallback(
-    async (write: () => Promise<WriteResult>) => {
+    async (write: () => Promise<WriteResult>, meta: { label: string; assetId?: string }) => {
       if (mode !== "demo") {
         setPhase({ kind: "failed", error: "The Vestra contract isn’t deployed yet, so nothing can be written." });
         return;
       }
       setPhase({ kind: "submitted" });
+      const logId = logTx(meta);
       try {
         const res = await write();
-        setPhase(res.ok ? { kind: "confirmed", tx: res.tx, index: res.index, assetId: res.assetId } : { kind: "failed", error: res.error });
+        if (res.ok) {
+          setPhase({ kind: "confirmed", tx: res.tx, index: res.index, assetId: res.assetId });
+          settleTx(logId, { status: "confirmed", tx: res.tx, ...(res.assetId && { assetId: res.assetId }) });
+        } else {
+          setPhase({ kind: "failed", error: res.error });
+          settleTx(logId, { status: "failed", error: res.error });
+        }
       } catch {
-        setPhase({ kind: "failed", error: "Couldn’t reach BOT Chain. Nothing was written; try again." });
+        const error = "Couldn’t reach BOT Chain. Nothing was written; try again.";
+        setPhase({ kind: "failed", error });
+        settleTx(logId, { status: "failed", error });
       }
     },
     [mode],

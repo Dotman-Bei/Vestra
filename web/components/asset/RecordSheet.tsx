@@ -100,6 +100,7 @@ export function RecordSheet({
         newStatus: effectiveType === "STATUS_CHANGE" ? (newStatus as AssetStatus) : undefined,
         supersedes: effectiveType === "CORRECTION" ? Number(supersedes) : undefined,
       }),
+      { label: `${RECORD_LABEL[effectiveType]} record`, assetId: asset.id },
     );
   }
 
