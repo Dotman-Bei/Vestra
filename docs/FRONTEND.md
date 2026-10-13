@@ -276,11 +276,12 @@ Main action: read the history; if the wallet is permitted, add a record. Layout:
 
 ### 3.3 Public Verification `/verify/[assetId]`
 
-Main action: confirm the record exists and see status. Mobile-first, narrow column, no nav clutter (header shows wordmark only plus "Open full passport").
+Main action: confirm the record exists and see status. Mobile-first, narrow column, no nav clutter (its own layout: wordmark-only header, no nav, and a footer with the limitations sentence and theme toggle; "Open full passport" sits in the content).
 
 **1. Result block**
 - Found: `SealCheck` icon, H1 **Record found on BOT Chain**, line "Read from block #4,812,033 just now" (mono, explorer link).
-- Then: asset name, mono ID, `StatusChip`.
+- Then: asset name, mono ID, `StatusChip`, and a status note naming who recorded the current status and when ("Reported damaged since 27 Aug 2026, recorded by 0x2d71…5b08."), so a verifier can judge the assertion.
+- If a handover is pending: "A handover to 0x… is pending. The steward above stays registered until it's accepted."
 
 **2. Key identifiers** (compact `FactList`): Registered steward, Registrar, Registered on, Public serial (if published).
 
