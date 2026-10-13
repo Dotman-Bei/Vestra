@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ArrowsLeftRightIcon, PlusIcon } from "@phosphor-icons/react";
 import type { Asset, LifecycleRecord } from "@/lib/types";
 import { formatDateTime } from "@/lib/format";
@@ -13,7 +14,7 @@ import { ConfirmHandoverDialog, ProposeHandoverDialog } from "./HandoverDialogs"
 
 /** Handover banner plus the record and handover actions the viewer's wallet is allowed to take. */
 export function PassportActions({ asset, records }: { asset: Asset; records: LifecycleRecord[] }) {
-  const { address, roles } = useViewer();
+  const { address, roles, ready } = useViewer();
   const [now] = useState(() => Math.floor(Date.now() / 1000));
   const [sheet, setSheet] = useState<null | "record" | "propose" | "accept" | "cancel">(null);
 
@@ -21,6 +22,21 @@ export function PassportActions({ asset, records }: { asset: Asset; records: Lif
   const canPropose = canProposeHandover(asset, address, now);
   const h = asset.pendingHandover;
   const live = h && h.expiresAt > now;
+
+  // Links from the dashboard (?do=record or ?do=handover) open the matching sheet once.
+  const params = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const intent = params.get("do");
+  const [handled, setHandled] = useState(false);
+  if (intent && ready && !handled) {
+    setHandled(true);
+    if (intent === "record" && allowed.length) setSheet("record");
+    if (intent === "handover" && canPropose) setSheet("propose");
+  }
+  useEffect(() => {
+    if (handled && intent) router.replace(pathname, { scroll: false });
+  }, [handled, intent, router, pathname]);
 
   return (
     <>
