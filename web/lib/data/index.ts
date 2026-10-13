@@ -1,6 +1,7 @@
+import { connection } from "next/server";
 import type { Asset, LifecycleRecord } from "../types";
 import { dataSource } from "../config";
-import { store } from "./fixtures";
+import { nextBlock, store } from "./fixtures";
 
 /**
  * Read layer. Pages only talk to these functions, so swapping the fixture
@@ -9,7 +10,7 @@ import { store } from "./fixtures";
 
 /** The chain (or indexer) couldn't be reached. Says nothing about the record itself. */
 export class ChainReadError extends Error {
-  constructor(message = "Couldn't reach BOT Chain") {
+  constructor(message = "Couldn’t reach BOT Chain") {
     super(message);
     this.name = "ChainReadError";
   }
@@ -17,7 +18,9 @@ export class ChainReadError extends Error {
 
 export type MetadataStatus = "available" | "unavailable" | "none";
 
-function guard() {
+/** Chain state is request-time data: never bake it into a prerendered shell. */
+async function guard() {
+  await connection();
   if (dataSource === "chain") {
     // The registry contract isn't deployed yet; chain reads land with it.
     throw new ChainReadError("Chain reads are not implemented yet");
@@ -26,23 +29,29 @@ function guard() {
 }
 
 export async function getAsset(id: string): Promise<Asset | null> {
-  guard();
+  await guard();
   const asset = store.assets.get(id);
   return asset ? structuredClone(asset) : null;
 }
 
 /** Oldest first, as stored on-chain. */
 export async function getRecords(id: string): Promise<LifecycleRecord[]> {
-  guard();
+  await guard();
   return structuredClone(store.records.get(id) ?? []);
 }
 
 export async function getMetadataStatus(id: string): Promise<MetadataStatus> {
-  guard();
+  await guard();
   return store.metadata.get(id) ?? "none";
 }
 
 export async function listAssets(): Promise<Asset[]> {
-  guard();
+  await guard();
   return structuredClone([...store.assets.values()]);
+}
+
+/** The latest block the read was made against, shown as a receipt on the verify page. */
+export async function getChainHead(): Promise<{ block: number; timestamp: number }> {
+  await guard();
+  return nextBlock();
 }
