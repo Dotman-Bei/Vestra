@@ -19,6 +19,7 @@
 | Date | Change | Wallet | Transaction |
 |---|---|---|---|
 | 2026-10-13 | Granted `REGISTRAR_ROLE` | `0x2e32a4d53628111125BC1b97D4D1f55d12aCe0A7` | [`0x0506…0791`](https://scan.bohr.life/tx/0x050688504a10713e3dadc356dba79c5c124299072e50c2820674eb0a37690791) |
+| 2026-10-13 | Granted `SERVICE_PROVIDER_ROLE` | `0x2e32a4d53628111125BC1b97D4D1f55d12aCe0A7` | [`0x62d6…6731`](https://scan.bohr.life/tx/0x62d6279d07aa3c87c77d14d4d205bec4f5be0dc8c4c3addbc09066495bcf6731) |
 
 **Status: development deployment only.** The deployer's private key was exposed in a development session log, so anyone with that log could act as admin and grant roles. Use this address for testing the app against a live network. Before onboarding real pilot assets, redeploy from a fresh wallet with a multisig admin, and record the new address here.
 
