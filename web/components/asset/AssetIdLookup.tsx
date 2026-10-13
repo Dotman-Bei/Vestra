@@ -22,7 +22,7 @@ export function AssetIdLookup({ className, autoFocus }: { className?: string; au
     }
     const assetId = normalizeAssetId(value);
     if (!assetId) {
-      setError("That isn't a Vestra asset ID. IDs look like VST-0007.");
+      setError("That isn’t a Vestra asset ID. IDs look like VST-0007.");
       return;
     }
     setError(null);

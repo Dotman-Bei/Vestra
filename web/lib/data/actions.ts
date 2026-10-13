@@ -72,7 +72,7 @@ export async function submitRecord(input: SubmitRecordInput): Promise<WriteResul
   const roles = rolesOf(input.actor);
 
   if (!allowedRecordTypes(asset, input.actor, roles, records).includes(input.type)) {
-    return fail("Your wallet isn't allowed to add this type of record to this asset.");
+    return fail("Your wallet isn’t allowed to add this type of record to this asset.");
   }
   const summary = input.summary.trim();
   if (!summary || summary.length > SUMMARY_MAX) return fail(`The summary must be 1 to ${SUMMARY_MAX} characters.`);
@@ -80,7 +80,7 @@ export async function submitRecord(input: SubmitRecordInput): Promise<WriteResul
   let newStatus: AssetStatus | undefined;
   if (input.type === "STATUS_CHANGE") {
     if (!input.newStatus || !statusChangeTargets(asset.status).includes(input.newStatus)) {
-      return fail("That status change isn't allowed from the asset's current status.");
+      return fail("That status change isn’t allowed from the asset’s current status.");
     }
     newStatus = input.newStatus;
   }
@@ -88,7 +88,7 @@ export async function submitRecord(input: SubmitRecordInput): Promise<WriteResul
 
   if (input.type === "CORRECTION") {
     const target = correctableRecords(records, input.actor).find((r) => r.index === input.supersedes);
-    if (!target) return fail("You can only correct a record your wallet submitted that hasn't already been corrected.");
+    if (!target) return fail("You can only correct a record your wallet submitted that hasn’t already been corrected.");
   }
 
   const rec = append(input.assetId, {
@@ -125,8 +125,8 @@ export async function proposeHandover(input: {
   if (!canProposeHandover(asset, input.actor, now)) {
     return fail("Only the registered steward can propose a handover, and only one can be open at a time.");
   }
-  if (!isAddress(input.to)) return fail("The recipient isn't a valid wallet address.");
-  if (input.to.toLowerCase() === input.actor.toLowerCase()) return fail("You can't hand an asset over to your own wallet.");
+  if (!isAddress(input.to)) return fail("The recipient isn’t a valid wallet address.");
+  if (input.to.toLowerCase() === input.actor.toLowerCase()) return fail("You can’t hand an asset over to your own wallet.");
   if (![3, 7, 14, 30].includes(input.days)) return fail("Choose an expiry of 3, 7, 14 or 30 days.");
 
   const tx = fakeHex(`${input.assetId}-propose-${now}`);

@@ -14,7 +14,7 @@ import { TxStatus } from "./TxStatus";
 import { useWrite } from "./useWrite";
 
 const LEGAL_NOTE =
-  "This changes the registered steward in Vestra once the recipient accepts. It doesn't transfer legal ownership.";
+  "This changes the registered steward in Vestra once the recipient accepts. It doesn’t transfer legal ownership.";
 
 export function ProposeHandoverDialog({
   open,
@@ -51,7 +51,7 @@ export function ProposeHandoverDialog({
     if (!address) return;
     const value = to.trim();
     if (!isAddress(value)) return setError("Enter a full wallet address starting with 0x.");
-    if (value.toLowerCase() === address.toLowerCase()) return setError("That's your own wallet. Enter the recipient's.");
+    if (value.toLowerCase() === address.toLowerCase()) return setError("That’s your own wallet. Enter the recipient’s.");
     setError(null);
     run(() =>
       proposeHandover({ assetId: asset.id, actor: address, to: value, days: Number(days), evidenceHash: files[0]?.hash }),
@@ -97,7 +97,7 @@ export function ProposeHandoverDialog({
             />
           </Field>
 
-          <Field id={`${id}-days`} label="Expires in" helper="After this the proposal can't be accepted.">
+          <Field id={`${id}-days`} label="Expires in" helper="After this the proposal can’t be accepted.">
             <select
               id={`${id}-days`}
               value={days}

@@ -141,7 +141,7 @@ export function WalletButton({ compact = false }: { compact?: boolean }) {
                 ? "No browser wallet found. Install one, then reload this page."
                 : connect.error.name === "UserRejectedRequestError"
                   ? "You declined the connection in your wallet."
-                  : "Couldn't connect. Check your wallet and try again."}
+                  : "Couldn’t connect. Check your wallet and try again."}
             </p>
           )}
         </Menu.Content>

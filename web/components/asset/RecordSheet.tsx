@@ -80,7 +80,7 @@ export function RecordSheet({
     else if (summary.length > SUMMARY_MAX) e.summary = `Keep the summary to ${SUMMARY_MAX} characters.`;
     if (documentUri && !/^(https:\/\/|ipfs:\/\/)\S+$/.test(documentUri)) e.documentUri = "Use an https:// or ipfs:// link.";
     if (effectiveType === "STATUS_CHANGE" && !newStatus) e.newStatus = "Choose the new status.";
-    if (effectiveType === "CORRECTION" && !supersedes) e.supersedes = "Choose the record you're correcting.";
+    if (effectiveType === "CORRECTION" && !supersedes) e.supersedes = "Choose the record you’re correcting.";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -239,7 +239,7 @@ export function RecordSheet({
             id={`${id}-uri`}
             label="Document link"
             optional
-            helper="Where an authorized reader can find the full document. Don't link anything with personal data."
+            helper="Where an authorized reader can find the full document. Don’t link anything with personal data."
             error={errors.documentUri}
           >
             <input

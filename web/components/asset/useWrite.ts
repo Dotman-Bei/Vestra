@@ -24,7 +24,7 @@ export function useWrite() {
   const run = useCallback(
     async (write: () => Promise<WriteResult>) => {
       if (mode !== "demo") {
-        setPhase({ kind: "failed", error: "The Vestra contract isn't deployed yet, so nothing can be written." });
+        setPhase({ kind: "failed", error: "The Vestra contract isn’t deployed yet, so nothing can be written." });
         return;
       }
       setPhase({ kind: "submitted" });
@@ -32,7 +32,7 @@ export function useWrite() {
         const res = await write();
         setPhase(res.ok ? { kind: "confirmed", tx: res.tx, index: res.index } : { kind: "failed", error: res.error });
       } catch {
-        setPhase({ kind: "failed", error: "Couldn't reach BOT Chain. Nothing was written; try again." });
+        setPhase({ kind: "failed", error: "Couldn’t reach BOT Chain. Nothing was written; try again." });
       }
     },
     [mode],
