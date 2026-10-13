@@ -1,0 +1,32 @@
+[profile.default]
+src = "src"
+out = "out"
+test = "test"
+script = "script"
+libs = ["lib", "node_modules"]
+solc = "0.8.28"
+# BOT Chain supports Cancun opcodes (probed 2026-10-13, see docs/ADR-001).
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+via_ir = true
+remappings = [
+  "@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/",
+  "forge-std/=lib/forge-std/src/",
+]
+
+[fuzz]
+runs = 512
+
+[invariant]
+runs = 64
+depth = 64
+
+[rpc_endpoints]
+local = "http://127.0.0.1:8545"
+bohr = "${BOHR_RPC_URL}"
+bot = "${BOT_RPC_URL}"
+
+[lint]
+# Handover expiries are measured in days; validator timestamp drift (seconds) doesn't matter here.
+exclude_lints = ["block-timestamp"]
