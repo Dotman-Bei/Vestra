@@ -107,7 +107,7 @@ export async function submitRecord(input: SubmitRecordInput): Promise<WriteResul
   if (newStatus === "RETIRED") asset.pendingHandover = undefined;
 
   refresh();
-  return { ok: true, tx: rec.tx, index: rec.index };
+  return { ok: true, tx: rec.tx!, index: rec.index };
 }
 
 export async function proposeHandover(input: {
@@ -165,7 +165,7 @@ export async function acceptHandover(input: { assetId: string; actor: Address })
   asset.steward = input.actor;
   asset.pendingHandover = undefined;
   refresh();
-  return { ok: true, tx: rec.tx, index: rec.index };
+  return { ok: true, tx: rec.tx!, index: rec.index };
 }
 
 export async function cancelHandover(input: { assetId: string; actor: Address }): Promise<WriteResult> {
@@ -189,8 +189,8 @@ export async function registerAsset(input: RegistrationInput & { actor: Address 
   const firstError = Object.values(errors)[0];
   if (firstError) return fail(firstError);
 
-  // Sequential IDs, as the contract assigns them. VST-0007 is reserved for the Home page example.
-  const used = new Set([...store.assets.keys(), "VST-0007"]);
+  // Sequential IDs, as the contract assigns them.
+  const used = new Set(store.assets.keys());
   const idFor = (n: number) => `VST-${String(n).padStart(4, "0")}`;
   let n = Math.max(...[...used].map((id) => Number(id.slice(4)))) + 1;
   while (used.has(idFor(n))) n++;

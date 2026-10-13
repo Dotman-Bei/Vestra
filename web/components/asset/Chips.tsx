@@ -66,6 +66,16 @@ export function TxLink({ hash, className }: { hash: string; className?: string }
   return <HashChip hash={hash} className={className} />;
 }
 
+/** Links a transaction when its hash is known, otherwise the block it landed in. */
+export function ChainRef({ tx, block, className }: { tx?: string; block: number; className?: string }) {
+  if (tx) return <TxLink hash={tx} className={className} />;
+  return (
+    <span className={cn("inline-flex items-center gap-1 text-[13px]", className)}>
+      Block <BlockLink block={block} />
+    </span>
+  );
+}
+
 export function BlockLink({ block }: { block: number }) {
   const href = explorerBlock(block);
   const text = <span className="font-mono text-[13px]">{formatNumber(block)}</span>;

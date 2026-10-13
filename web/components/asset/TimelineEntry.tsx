@@ -3,7 +3,7 @@ import { formatDateTime, RECORD_LABEL, STATUS_LABEL, truncateAddress, truncateHa
 import { cn } from "@/lib/cn";
 import { RECORD_ICON, CLAIM_TYPES } from "./recordIcons";
 import { ProvenanceTag } from "./ProvenanceTag";
-import { AddressChip, HashChip, TxLink } from "./Chips";
+import { AddressChip, ChainRef, HashChip } from "./Chips";
 
 function shortUri(uri: string) {
   const [, scheme = "", rest = uri] = uri.match(/^([a-z]+:\/\/)?(.*)$/) ?? [];
@@ -112,9 +112,9 @@ export function TimelineEntry({
               </div>
             )}
             <div className="flex items-center gap-1">
-              <dt>Tx</dt>
+              <dt>{record.tx ? "Tx" : "On-chain"}</dt>
               <dd>
-                <TxLink hash={record.tx} />
+                <ChainRef tx={record.tx} block={record.block} />
               </dd>
             </div>
           </dl>

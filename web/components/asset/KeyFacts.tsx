@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { CheckCircleIcon, WarningIcon } from "@phosphor-icons/react/ssr";
 import type { Asset, ProvenanceKind } from "@/lib/types";
-import type { MetadataStatus } from "@/lib/data";
+import type { MetadataStatus } from "@/lib/data/errors";
 import { formatDate } from "@/lib/format";
 import { cn } from "@/lib/cn";
 import { AddressChip, BlockLink, HashChip, TxLink } from "./Chips";
@@ -54,9 +54,11 @@ export function KeyFacts({ asset, metadata }: { asset: Asset; metadata: Metadata
             <span className="text-muted">at block</span>
             <BlockLink block={asset.registeredBlock} />
           </span>
-          <span className="mt-0.5 flex items-center gap-1 text-[13px] text-muted">
-            Tx <TxLink hash={asset.registeredTx} />
-          </span>
+          {asset.registeredTx && (
+            <span className="mt-0.5 flex items-center gap-1 text-[13px] text-muted">
+              Tx <TxLink hash={asset.registeredTx} />
+            </span>
+          )}
         </Fact>
         <Fact label="Serial number" kind="claim">
           {asset.publicSerial ? (
@@ -96,7 +98,9 @@ export function KeyFacts({ asset, metadata }: { asset: Asset; metadata: Metadata
               ) : (
                 <span className="flex items-start gap-1.5 text-[13px] leading-[18px] text-ink">
                   <WarningIcon size={15} aria-hidden className="mt-px shrink-0" style={{ color: "var(--st-maint-fg)" }} />
-                  Couldn&rsquo;t load the metadata. The on-chain record is unaffected.
+                  {metadata === "mismatch"
+                    ? "The linked metadata doesn’t match the recorded hash. It may have changed since registration."
+                    : "Couldn’t load the metadata. The on-chain record is unaffected."}
                 </span>
               )}
             </span>

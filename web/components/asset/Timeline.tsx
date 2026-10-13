@@ -8,7 +8,7 @@ import { formatDateTime, RECORD_LABEL } from "@/lib/format";
 import { buttonClass } from "@/components/ui/button";
 import { inputClass } from "@/components/ui/Field";
 import { TimelineEntry } from "./TimelineEntry";
-import { AddressChip, TxLink } from "./Chips";
+import { AddressChip, ChainRef } from "./Chips";
 
 const PAGE = 20;
 
@@ -99,9 +99,9 @@ export function Timeline({ asset, records }: { asset: Asset; records: LifecycleR
                     </dd>
                   </div>
                   <div className="flex items-center gap-1">
-                    <dt>Tx</dt>
+                    <dt>{asset.registeredTx ? "Tx" : "On-chain"}</dt>
                     <dd>
-                      <TxLink hash={asset.registeredTx} />
+                      <ChainRef tx={asset.registeredTx} block={asset.registeredBlock} />
                     </dd>
                   </div>
                 </dl>

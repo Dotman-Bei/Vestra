@@ -55,7 +55,7 @@ export function ProofBento() {
                 <dt className="text-muted">block</dt>
                 <dd className="truncate text-ink">{formatNumber(EXAMPLE_ASSET.registeredBlock)}</dd>
                 <dt className="text-muted">tx</dt>
-                <dd className="truncate text-ink">{truncateHash(EXAMPLE_ASSET.registeredTx)}</dd>
+                <dd className="truncate text-ink">{truncateHash(EXAMPLE_ASSET.registeredTx!)}</dd>
               </dl>
             </figure>
           </article>

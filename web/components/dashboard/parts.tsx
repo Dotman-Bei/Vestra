@@ -14,7 +14,7 @@ import type { DashboardData, DashboardRecord } from "@/lib/data";
 import { formatDate, formatDateTime, RECORD_LABEL } from "@/lib/format";
 import { allowedRecordTypes, canProposeHandover } from "@/lib/rules";
 import { StatusChip } from "@/components/asset/StatusChip";
-import { TxLink } from "@/components/asset/Chips";
+import { ChainRef, TxLink } from "@/components/asset/Chips";
 import { RECORD_ICON } from "@/components/asset/recordIcons";
 import { inputClass } from "@/components/ui/Field";
 import { Sheet } from "@/components/ui/Sheet";
@@ -131,7 +131,7 @@ export function RecordRows({ records }: { records: DashboardRecord[] }) {
                 <span aria-hidden className="px-1">
                   ·
                 </span>
-                Tx <TxLink hash={r.tx} />
+                <ChainRef tx={r.tx} block={r.block} />
               </p>
             </div>
           </li>

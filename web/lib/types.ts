@@ -32,7 +32,8 @@ export interface Handover {
   /** Unix seconds */
   expiresAt: number;
   evidenceHash?: Hex;
-  proposedTx: Hex;
+  /** Unknown when the chain was read without event logs. */
+  proposedTx?: Hex;
 }
 
 export interface Asset {
@@ -52,7 +53,8 @@ export interface Asset {
   /** Unix seconds */
   registeredAt: number;
   registeredBlock: number;
-  registeredTx: Hex;
+  /** Unknown when the chain was read without event logs; show the block instead. */
+  registeredTx?: Hex;
   metadataUri?: string;
   metadataHash?: Hex;
   evidenceHashes: Hex[];
@@ -70,7 +72,8 @@ export interface LifecycleRecord {
   /** Unix seconds, from the block */
   timestamp: number;
   block: number;
-  tx: Hex;
+  /** Unknown when the chain was read without event logs; show the block instead. */
+  tx?: Hex;
   summary: string;
   evidenceHash?: Hex;
   documentUri?: string;
