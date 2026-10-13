@@ -54,7 +54,7 @@ async function Passport({ params }: { params: PageProps<"/assets/[assetId]">["pa
 
   if (!id) {
     return (
-      <StateMessage icon={MagnifyingGlassIcon} as="h1" title="That isn't a Vestra asset ID." className="py-12" action={<AssetIdLookup />}>
+      <StateMessage icon={MagnifyingGlassIcon} as="h1" title="That isn’t a Vestra asset ID." className="py-12" action={<AssetIdLookup />}>
         Vestra IDs look like VST-0007.
       </StateMessage>
     );
@@ -69,7 +69,7 @@ async function Passport({ params }: { params: PageProps<"/assets/[assetId]">["pa
     return (
       <>
         <Breadcrumb id={id} />
-        <StateMessage icon={CloudSlashIcon} as="h1" title="Couldn't reach BOT Chain." className="py-12" action={<RetryButton />}>
+        <StateMessage icon={CloudSlashIcon} as="h1" title="Couldn’t reach BOT Chain." className="py-12" action={<RetryButton />}>
           Nothing is wrong with the record. The connection failed; try again.
         </StateMessage>
       </>
