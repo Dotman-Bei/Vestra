@@ -2,6 +2,7 @@
 
 import { QRCodeSVG } from "qrcode.react";
 import { cn } from "@/lib/cn";
+import { VestraMark } from "@/components/shell/Wordmark";
 
 /**
  * The physical tag fixed to the equipment. It always renders dark-on-light,
@@ -19,12 +20,7 @@ export function PrintTag({ assetId, url, className }: { assetId: string; url: st
     >
       <div className="flex items-center justify-between">
         <span className="inline-flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em]">
-          <span
-            aria-hidden
-            className="inline-flex size-5 items-center justify-center rounded-[4px] border-[1.5px] border-current font-mono text-[11px] leading-none"
-          >
-            V
-          </span>
+          <VestraMark size={20} color="#14171c" />
           Vestra
         </span>
         <span className="text-[11px] font-medium text-[#555b66]">Asset passport</span>
