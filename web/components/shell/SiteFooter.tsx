@@ -3,6 +3,7 @@ import { explorerAddress, registryAddress, repoUrl } from "@/lib/config";
 import { truncateAddress } from "@/lib/format";
 import { Wordmark } from "./Wordmark";
 import { NAV_LINKS } from "./nav";
+import { BuiltOnBotChain } from "./BuiltOnBotChain";
 
 const linkClass = "text-muted hover:text-ink underline-offset-4 hover:underline";
 
@@ -56,6 +57,9 @@ export function SiteFooter() {
             <li className="text-muted">MIT License</li>
           </ul>
         </div>
+      </div>
+      <div className="border-t border-line">
+        <BuiltOnBotChain className="mx-auto max-w-[1200px] px-4 py-5 md:px-8" />
       </div>
     </footer>
   );

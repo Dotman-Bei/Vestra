@@ -169,6 +169,7 @@ Record type labels: Inspection, Maintenance, Warranty update, Installation, Inci
 - Limitations (always visible, 14px muted): "A Vestra record shows what authorized wallets submitted and when. It is not proof of legal ownership, physical condition, location or value."
 - Links: Registry · Register · Dashboard · Source code · Contract on explorer (renders "Contract not yet deployed" text when env is empty)
 - "MIT License"
+- Bottom row, on every page including Verify: "Built on **BOT Chain**" with links to the BOT Chain website (`https://www.botchain.ai/en/`) and the BOT Chain Explorer for the configured network. The BOT Chain name is used rather than a logo, since no official logo file is available to the project.
 
 ---
 
