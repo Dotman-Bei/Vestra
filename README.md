@@ -144,26 +144,25 @@ cd web && npx tsc --noEmit && npx eslint . && npx next build
 
 ## Deployment
 
-Network values were verified on 2026-10-13 against the official BOT Chain docs and each RPC (see ADR-001):
+Vestra is deployed on **BOT Mainnet**: see [docs/DEPLOYMENTS.md](docs/DEPLOYMENTS.md) for the address, transaction and admin. Network values were verified on 2026-10-13 against the official BOT Chain docs and each RPC (see ADR-001):
 
-| | Bohr Testnet | BOT Mainnet |
+| | BOT Mainnet | Bohr Testnet (sandbox) |
 |---|---|---|
-| Chain ID | 968 | 677 |
-| RPC | `https://rpc.bohr.life` | `https://rpc.botchain.ai` |
-| Explorer | `https://scan.bohr.life` | `https://scan.botchain.ai` |
-| Gas token | tBOT ([faucet](https://faucet.botchain.ai/basic)) | BOT |
+| Chain ID | 677 | 968 |
+| RPC | `https://rpc.botchain.ai` | `https://rpc.bohr.life` |
+| Explorer | `https://scan.botchain.ai` | `https://scan.bohr.life` |
+| Gas token | BOT | tBOT ([faucet](https://faucet.botchain.ai/basic)) |
+
+To deploy a new registry:
 
 ```bash
 cd contracts
-cp .env.example .env    # set PRIVATE_KEY (funded with tBOT), ADMIN_ADDRESS, optional initial roles
-source .env
-forge script script/Deploy.s.sol --rpc-url bohr --broadcast \
-  --verify --verifier blockscout --verifier-url https://scan.bohr.life/api/
+cp .env.example .env    # set PRIVATE_KEY (funded with BOT), optional ADMIN_ADDRESS and initial roles
+forge script script/Deploy.s.sol --rpc-url bot --broadcast \
+  --verify --verifier blockscout --verifier-url https://scan.botchain.ai/api/
 ```
 
-If `ADMIN_ADDRESS` differs from the deployer, the script starts a two-step admin transfer; the admin accepts after 2 days with `acceptDefaultAdminTransfer()`. Then set the web env (`web/.env.example` lists every variable), with `NEXT_PUBLIC_DATA_SOURCE=chain`, and deploy the app.
-
-**Testnet to mainnet:** deploy and verify on Bohr; run the pilot flow on testnet with real participants; review the threat model and data/legal assumptions; move admin to a multisig; deploy and verify on mainnet with the same script.
+The deploy uses about 3.4M gas (about 0.07 BOT at 20 gwei). If `ADMIN_ADDRESS` differs from the deployer, the script starts a two-step admin transfer; the admin accepts after 2 days with `acceptDefaultAdminTransfer()`. Then set the web env (`web/.env.example` lists every variable, prefilled for mainnet) and deploy the app. For a sandbox, use `--rpc-url bohr` and `https://scan.bohr.life/api/` instead.
 
 ## Threat model
 
@@ -198,7 +197,7 @@ If `ADMIN_ADDRESS` differs from the deployer, the script starts a two-step admin
 | M2 Registry contract: registration, roles, unique IDs | Done (tested, local) |
 | M3 Records and handover: status machine, corrections, expiry | Done (tested, local) |
 | M4 Frontend MVP: six pages, wallet flows, QR | Done (demo and local chain) |
-| M5 Testnet pilot and hardening: deploy and verify on Bohr, e2e from separate devices, edge cases | In progress: development deployment verified on Bohr; clean redeploy and device testing next |
+| M5 Testnet pilot and hardening: deploy and verify on Bohr, e2e from separate devices, edge cases | Done for contracts and app (verified on Bohr as a sandbox); device testing continues on mainnet |
 | M6 Mainnet and real usage: multisig admin, mainnet deploy, real pilot, demo video, build log | In progress: deployed and verified on mainnet; multisig, pilot, demo video and build log next |
 
 ## License

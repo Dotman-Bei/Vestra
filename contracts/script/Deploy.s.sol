@@ -10,8 +10,8 @@ import {VestraRegistry} from "../src/VestraRegistry.sol";
 /// ADMIN_ADDRESS differs, the script then begins the two-step admin transfer; ADMIN_ADDRESS must call
 /// `acceptDefaultAdminTransfer()` after the 2-day delay.
 ///
-///   forge script script/Deploy.s.sol --rpc-url bohr --broadcast \
-///     --verify --verifier blockscout --verifier-url https://scan.bohr.life/api/
+///   forge script script/Deploy.s.sol --rpc-url bot --broadcast \
+///     --verify --verifier blockscout --verifier-url https://scan.botchain.ai/api/
 contract Deploy is Script {
     function run() external returns (VestraRegistry reg) {
         uint256 key = vm.envUint("PRIVATE_KEY");
