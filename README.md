@@ -2,6 +2,8 @@
 
 **A verifiable digital passport and lifecycle record for real-world equipment, built on BOT Chain.**
 
+**Live app:** [vestra-ashy.vercel.app](https://vestra-ashy.vercel.app) (BOT Mainnet)
+
 Vestra gives each piece of equipment a passport: who registered it, every inspection, repair and incident, and every change of the wallet responsible for it, in one append-only record anyone can check by scanning a QR tag.
 
 > **Status:** MVP. Live and source-verified on **BOT Mainnet** at [`0x560E…7CdE`](https://scan.botchain.ai/address/0x560Ec94e3c74F41F05352e535a75E2d16dFB7CdE), with a development deployment on Bohr Testnet ([details](docs/DEPLOYMENTS.md)). **Not audited.** No pilot assets have been registered yet. The app's demo mode shows clearly labeled example data.
