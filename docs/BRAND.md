@@ -19,6 +19,13 @@ Built on a 64-unit grid as a single even-odd path. No gradients, no effects, no 
 
 The favicon is `web/app/icon.svg` (same as `vestra-mark.svg`); `web/app/apple-icon.png` is the 180 px touch icon.
 
+## Social (`web/public/brand/social/`)
+
+| File | Use |
+|---|---|
+| `vestra-x-profile.png` (400×400, plus `@2x` and `.svg`) | X/Twitter profile photo. X crops it to a circle; the mark sits inside the safe area. |
+| `vestra-x-header.png` (1500×500, plus `@2x` and `.svg`) | X/Twitter header. Content stays in the centre band, clear of the bottom-left profile-photo overlap and mobile cropping. |
+
 ## Colours
 
 | | Hex |
