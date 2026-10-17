@@ -27,4 +27,19 @@ Broadcast receipts: `contracts/broadcast/Deploy.s.sol/968/`.
 
 ## BOT Mainnet (chain 677)
 
-Not deployed.
+| | |
+|---|---|
+| Contract | `VestraRegistry` |
+| Address | [`0x560Ec94e3c74F41F05352e535a75E2d16dFB7CdE`](https://scan.botchain.ai/address/0x560Ec94e3c74F41F05352e535a75E2d16dFB7CdE) |
+| Deploy transaction | [`0xffcca116fd6827306bb08fca894c2f1b4a0662bc77cf63c07aef2154bfc52f9a`](https://scan.botchain.ai/tx/0xffcca116fd6827306bb08fca894c2f1b4a0662bc77cf63c07aef2154bfc52f9a) |
+| Block | 26,994,296 |
+| Date | 2026-10-17 |
+| Source verification | Verified on the BOT Mainnet explorer (Blockscout) |
+| Compiler | solc 0.8.28, optimizer 200 runs, via-IR, EVM `cancun` |
+| Default admin | `0x3dB2d88263EA4c86Bac7abBC5Edb77Fac77d41B5` (fresh deployer wallet, never exposed), 2-day admin transfer delay |
+| Roles granted at deploy | None |
+| Gas used | 3,416,045 at 20 gwei (~0.068 BOT) |
+
+The admin is a single wallet, not a multisig. Move admin to a multisig before the pilot grows, using `beginDefaultAdminTransfer` (2-day delay).
+
+Broadcast receipts: `contracts/broadcast/Deploy.s.sol/677/`.

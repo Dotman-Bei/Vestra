@@ -4,7 +4,7 @@
 
 Vestra gives each piece of equipment a passport: who registered it, every inspection, repair and incident, and every change of the wallet responsible for it, in one append-only record anyone can check by scanning a QR tag.
 
-> **Status:** MVP. A development deployment is live and source-verified on Bohr Testnet ([details](docs/DEPLOYMENTS.md)); it will be replaced by a clean deployment with a multisig admin before the pilot. Not deployed to BOT Mainnet. **Not audited.** No pilot assets have been registered. The app's demo mode shows clearly labeled example data.
+> **Status:** MVP. Live and source-verified on **BOT Mainnet** at [`0x560E…7CdE`](https://scan.botchain.ai/address/0x560Ec94e3c74F41F05352e535a75E2d16dFB7CdE), with a development deployment on Bohr Testnet ([details](docs/DEPLOYMENTS.md)). **Not audited.** No pilot assets have been registered yet. The app's demo mode shows clearly labeled example data.
 
 ## The problem
 
@@ -180,7 +180,7 @@ If `ADMIN_ADDRESS` differs from the deployer, the script starts a two-step admin
 
 ## Known limitations
 
-- Only a development deployment exists, on Bohr Testnet; its admin key was exposed, so a clean redeploy is required before the pilot. Not on BOT Mainnet.
+- Admin is a single wallet, not yet a multisig. The Bohr Testnet deployment's admin key was exposed; treat it as a sandbox.
 - Not audited.
 - No real pilot assets or users yet. Example data is always labeled.
 - Registry and dashboard read every asset; an indexer is needed past pilot scale.
@@ -197,7 +197,7 @@ If `ADMIN_ADDRESS` differs from the deployer, the script starts a two-step admin
 | M3 Records and handover: status machine, corrections, expiry | Done (tested, local) |
 | M4 Frontend MVP: six pages, wallet flows, QR | Done (demo and local chain) |
 | M5 Testnet pilot and hardening: deploy and verify on Bohr, e2e from separate devices, edge cases | In progress: development deployment verified on Bohr; clean redeploy and device testing next |
-| M6 Mainnet and real usage: multisig admin, mainnet deploy, real pilot, demo video, build log | Planned |
+| M6 Mainnet and real usage: multisig admin, mainnet deploy, real pilot, demo video, build log | In progress: deployed and verified on mainnet; multisig, pilot, demo video and build log next |
 
 ## License
 
